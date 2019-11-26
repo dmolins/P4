@@ -15,7 +15,7 @@
 lists=lists
 w=work
 name_exp=one
-db=spk_db/speecon
+db=spk_ima/speecon
 
 # ------------------------
 # Usage
@@ -78,18 +78,34 @@ fi
 # - Select (or change) different features, options, etc. Make you best choice and try several options.
 
 compute_lp() {
-    for filename in $(cat $lists/class/all.train $lists/class/all.test); do
-        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
-        EXEC="wav2lp 8 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
-        echo $EXEC && $EXEC || exit 1
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre lp
+        EXEC="wav2lp 8 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2lp
+        echo $EXEC && $EXEC || exit 1 #??
+    done
+}
+
+compute_lpcc(){
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre lpcc
+        EXEC="wav2lpcc 8 12 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2lpcc
+        echo $EXEC && $EXEC || exit 1 #??
+    done
+}
+
+compute_mfcc(){
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre mfcc
+        EXEC="wav2mfcc 10 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2mfcc
+        echo $EXEC && $EXEC || exit 1 #??
     done
 }
 
 
 #  Set the name of the feature (not needed for feature extraction itself)
-if [[ ! -v FEAT && $# > 0 && "$(type -t compute_$1)" = function ]]; then
+if [[ ! -n "$FEAT" && $# > 0 && "$(type -t compute_$1)" = function ]]; then
 	FEAT=$1
-elif [[ ! -v FEAT ]]; then
+elif [[ ! -n "$FEAT" ]]; then
 	echo "Variable FEAT not set. Please rerun with FEAT set to the desired feature."
 	echo
 	echo "For instance:"
