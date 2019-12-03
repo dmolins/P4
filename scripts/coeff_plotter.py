@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-file="mfcc_2_3.txt"
+file="lp_3_4.txt"
 
 with open(file) as f:
     lines = f.readlines()
@@ -14,7 +14,7 @@ x2 = x1.astype(np.float)
 y1 = np.array(y)
 y2 = y1.astype(np.float)
 
-plt.plot(x2,y2, marker='.', linestyle='None')
+plt.plot(x2,y2, marker='.', markersize=2, linestyle='None')
 plt.show()
 
 

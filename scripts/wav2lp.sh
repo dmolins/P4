@@ -40,7 +40,7 @@ fi
 
 # Main command for feature extration
 
-sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200 |
+sox $inputfile -t raw - dither -p12 | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200 |
 	$LPC -l 200 -m $lpc_order > $base.lp
 
 # Our array files need a header with the number of cols and rows:
