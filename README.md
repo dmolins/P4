@@ -76,9 +76,15 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
 
 - Inserte una gráfica que muestre la función de densidad de probabilidad modelada por el GMM de un locutor
   para sus dos primeros coeficientes de MFCC.
-  
+   <img src="img/4.3/entr_visualiz_GMM_1.png" width="640" align="center">
+ 
 - Inserte una gráfica que permita comparar los modelos y poblaciones de dos locutores distintos. Comente el
   resultado obtenido y discuta si el modelado mediante GMM permite diferenciar las señales de uno y otro.
+   <img src="img/4.3/modelo0-datos0.png" width="640" align="center">
+   <img src="img/4.3/modelo0-datos1.png" width="640" align="center">
+   <img src="img/4.3/modelo1-datos0.png" width="640" align="center">
+   <img src="img/4.3/modelo1-datos1.png" width="640" align="center">
+   
 
 ### Reconocimiento del locutor.
 
