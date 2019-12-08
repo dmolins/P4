@@ -78,34 +78,38 @@ fi
 # - Select (or change) different features, options, etc. Make you best choice and try several options.
 
 compute_lp() {
-    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
-        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre lp
-        EXEC="wav2lp 8 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2lp
-        echo $EXEC && $EXEC || exit 1 #??
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+        EXEC="wav2lp 8 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
+        echo $EXEC && $EXEC || exit 1
     done
 }
-
-compute_lpcc(){
-    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
-        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre lpcc
-        EXEC="wav2lpcc 8 12 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2lpcc
-        echo $EXEC && $EXEC || exit 1 #??
+compute_lpcc() {
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+        EXEC="wav2lpcc 8 12  $db/$filename.wav $w/$FEAT/$filename.$FEAT" 
+        echo $EXEC && $EXEC || exit 1
     done
 }
-
-compute_mfcc(){
-    for filename in $(cat $lists/class/all.train $lists/class/all.test); do #para toda la base de datos
-        mkdir -p `dirname $w/$FEAT/$filename.$FEAT` #crea una carpeta con el nombre mfcc
-        EXEC="wav2mfcc 10 $db/$filename.wav $w/$FEAT/$filename.$FEAT" #ejecuta el programa wav2mfcc
-        echo $EXEC && $EXEC || exit 1 #??
+compute_mfcc() {
+    for filename in $(cat $lists/class/all.train $lists/class/all.test); do
+        mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
+        EXEC="wav2mfcc 12 $db/$filename.wav $w/$FEAT/$filename.$FEAT" 
+        echo $EXEC && $EXEC || exit 1
     done
 }
 
 
 #  Set the name of the feature (not needed for feature extraction itself)
-if [[ ! -n "$FEAT" && $# > 0 && "$(type -t compute_$1)" = function ]]; then
+# windows
+# if [[ ! -v FEAT && $# > 0 && "$(type -t compute_$1)" = function ]]; then
+# mac
+if [[ ! -n FEAT && $# > 0 && "$(type -t compute_$1)" = function ]]; then
 	FEAT=$1
-elif [[ ! -n "$FEAT" ]]; then
+# windows
+# elif [[ ! -v FEAT ]]; then
+# mac
+elif [[ ! -n FEAT ]]; then
 	echo "Variable FEAT not set. Please rerun with FEAT set to the desired feature."
 	echo
 	echo "For instance:"
@@ -130,11 +134,15 @@ for cmd in $*; do
        for dir in $db/BLOCK*/SES* ; do
            name=${dir/*\/}
            echo $name ----
-           gmm_train  -v 1 -T 0.001 -N15 -m 4 -d $w/$FEAT -e $FEAT -g $w/gmm/$FEAT/$name.gmm $lists/class/$name.train || exit 1
+           gmm_train  -v 1 -T 0.001 -N20 -m 40 -d $w/$FEAT -e $FEAT -g $w/gmm/$FEAT/$name.gmm $lists/class/$name.train || exit 1
            echo
        done
    elif [[ $cmd == test ]]; then
-       find $w/gmm/$FEAT -name '*.gmm' -printf '%P\n' | perl -pe 's/.gmm$//' | sort  > $lists/gmm.list
+        # windows
+       # find $w/gmm/$FEAT -name '*.gmm' -printf '%P\n' | perl -pe 's/.gmm$//' | sort  > $lists/gmm.list
+        # mac
+       find $w/gmm/$FEAT -name '*.gmm' -print | sed -e "s-$w/gmm/$FEAT/--" -e 's/.gmm$//' | sort  > $lists/gmm.list
+
        (gmm_classify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm $lists/gmm.list  $lists/class/all.test | tee $w/class_${FEAT}_${name_exp}.log) || exit 1
 
    elif [[ $cmd == classerr ]]; then
@@ -154,7 +162,7 @@ for cmd in $*; do
 	   # Implement 'trainworld' in order to get a Universal Background Model for speaker verification
 	   #
 	   # - The name of the world model will be used by gmm_verify in the 'verify' command below.
-       echo "Implement the trainworld option ..."
+       gmm_train -v 1 -T 0.000001 -n 20 -N 20 -m 8 -d $w/$FEAT -e $FEAT -g $w/gmm/$FEAT/world.gmm lists/verif/others.train
    elif [[ $cmd == verify ]]; then
        ## @file
 	   # \TODO 
@@ -164,7 +172,7 @@ for cmd in $*; do
 	   #   For instance:
 	   #   * <code> gmm_verify ... > $w/verif_${FEAT}_${name_exp}.log </code>
 	   #   * <code> gmm_verify ... | tee $w/verif_${FEAT}_${name_exp}.log </code>
-       echo "Implement the verify option ..."
+       gmm_verify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm -w world lists/gmm.list $lists/verif/all.test $lists/verif/all.test.candidates > $w/verif_${FEAT}_${name_exp}.log
 
    elif [[ $cmd == verif_err ]]; then
        if [[ ! -s $w/verif_${FEAT}_${name_exp}.log ]] ; then
@@ -173,7 +181,7 @@ for cmd in $*; do
        fi
        # You can pass the threshold to spk_verif_score.pl or it computes the
        # best one for these particular results.
-       spk_verif_score.pl $w/verif_${FEAT}_${name_exp}.log | tee $w/verif_${FEAT}_${name_exp}.res
+       spk_verif_score $w/verif_${FEAT}_${name_exp}.log | tee $w/verif_${FEAT}_${name_exp}.res
 
    elif [[ $cmd == finalclass ]]; then
        ## @file
