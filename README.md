@@ -52,9 +52,17 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
 - Inserte una imagen mostrando la dependencia entre los coeficientes 2 y 3 de las tres parametrizaciones
   para una señal de prueba.
   
-  *La imagen siguiente es un ejemplo de cómo insertar imágenes en markdown*
+  **Parametrización lp**
   
-  <img src="img/tanh.png" width="640" align="center">
+  <img src="img/quof_lp.png" width="640" align="center">
+  
+   **Parametrización lpcc**
+  
+  <img src="img/quof_lpcc.png" width="640" align="center">
+  
+   **Parametrización mfcc**
+  
+  <img src="img/quof_mfcc.png" width="640" align="center">
   
   + ¿Cuál de ellas le parece que contiene más información?
 
