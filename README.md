@@ -53,16 +53,13 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
   para una señal de prueba.
   
   **Parametrización lp**
-  
-  <img src="img/quof_lp.png" width="640" align="center">
+   <img src="img/quof_lp.png" width="640" align="center">
   
    **Parametrización lpcc**
-  
-  <img src="img/quof_lpcc.png" width="640" align="center">
+   <img src="img/quof_lpcc.png" width="640" align="center">
   
    **Parametrización mfcc**
-  
-  <img src="img/quof_mfcc.png" width="640" align="center">
+   <img src="img/quof_mfcc.png" width="640" align="center">
   
   + ¿Cuál de ellas le parece que contiene más información?
 
