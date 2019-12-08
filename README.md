@@ -95,6 +95,10 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
 
 - Inserte una tabla con la tasa de error obtenida en el reconocimiento de los locutores de la base de datos
   SPEECON usando su mejor sistema de reconocimiento para los parámetros LP, LPCC y MFCC.
+  
+  |                | LP |LPCC|  MFCC |
+  |----------------|:--:|:--:|:-----:|
+  | Error rate (%) |7.01|2.17| 13.25 |
 
 ### Verificación del locutor.
 
@@ -102,6 +106,12 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
   de verificación de SPEECON. La tabla debe incluir el umbral óptimo, el número de falsas alarmas y de
   pérdidas, y el score obtenido usando la parametrización que mejor resultado le hubiera dado en la tarea
   de reconocimiento.
+   
+  |                    | LP | LPCC |  MFCC |
+  |--------------------|:--:|:----:|:-----:|
+  | Missed             |0.78| 0.57 | 0.976 |
+  | False Alarm        |0.00|0.001 |   0   |
+  | Cost Detection (%) |78.0| 67.1 |  97.6 |
  
 ### Test final y trabajo de ampliación.
 
