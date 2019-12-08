@@ -49,6 +49,8 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
 
 - Indique qué parámetros considera adecuados para el cálculo de los coeficientes LPCC y MFCC.
 
+**Respuesta:** Para el cálculo de los coeficientes LPCC hemos considerado adecuado utilizar 8 coeficientes, en el caso de los coeficientes MFCC hemos utilizado 12.
+
 - Inserte una imagen mostrando la dependencia entre los coeficientes 2 y 3 de las tres parametrizaciones
   para una señal de prueba.
   
@@ -62,6 +64,8 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
    <img src="img/quof_mfcc.png" width="640" align="center">
   
   + ¿Cuál de ellas le parece que contiene más información?
+  
+  Los coeficientes LP son más correlados que los LPCC, y a su vez, estos son más correlados que los MFCC. En definitiva, podemos observar que cuanto más disperso el gráfico, menor es la correlación. En conclusión los MFCC son los más incorrelados, y por lo tanto, los que tienen más información.
 
 - Usando el programa <code>pearson</code>, obtenga los coeficientes de correlación normalizada entre los
   parámetros 2 y 3, y rellene la tabla siguiente con los valores obtenidos.
@@ -71,6 +75,7 @@ sox $inputfile -t raw - | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200
   | &rho;<sub>x</sub>[2,3] |-0.621|0.3804|0.1300|
   
   + Compare los resultados de <code>pearson</code> con los obtenidos gráficamente.
+  Cuánto más cerca de |1| más correlado, por lo tanto, siguiendo la misma línea que los gráficos, MFCC es el menos correlado, LPCC el segundo y LP el más correlado.
   
 ### Entrenamiento y visualización de los GMM.
 
