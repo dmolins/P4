@@ -1,4 +1,3 @@
-
 #include <unistd.h> //getopt function, to parse options
 #include <iostream>
 #include <fstream>
@@ -21,8 +20,8 @@ int read_options(int ArgC, const char *ArgV[], vector<Directory> &input_dirs, ve
 
 int read_gmms(const Directory &dir, const Ext &ext, const vector<string> &gmm_filenames, map<string, GMM> &mgmm);
 
-
 float verify(const GMM &gmm_candidate, const fmatrix &dat) {
+
 
   /// \TODO
   /// Implement verification score based on gmm of the candidate.
@@ -36,9 +35,9 @@ float verify(const GMM &gmm_candidate, const GMM & gmm_world, const fmatrix &dat
 
   /// \TODO
   /// Implement verification score based on the gmm of the candidate and the 'world' model.
-  float score = lprobcand-lprobbackground;
   lprobcand = gmm_candidate.logprob(dat);
   lprobbackground = gmm_world.logprob(dat);
+  float score = lprobcand-lprobbackground;
   return score;
 }
 
@@ -127,8 +126,11 @@ int main(int argc, const char *argv[]) {
       float score, probCandidate, probWorld;
       const GMM &gmm_world = igmm_world->second;
       score = verify(gmm_candidate, gmm_world, dat, probCandidate, probWorld);
-      cout << input_filenames[i] << '\t' << candidates[i] << '\t' << score 
-	   << '\t' << probCandidate <<'\t' << probWorld << endl; 
+      ///cout << input_filenames[i] << '\t' << candidates[i] << '\t' << score << '\t' << probCandidate <<'\t' << probWorld << endl;
+      ///score << '\t' << probCandidate <<'\t' << probWorld << endl;
+      if(score > 0.4347613380544) 
+      cout << input_filenames[i] << '\t' << candidates[i] << '\t' << '1' << endl;
+      else cout << input_filenames[i] << '\t' << candidates[i] << '\t' << '0' << endl;
     }
   }
   return 0;

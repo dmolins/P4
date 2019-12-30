@@ -14,14 +14,16 @@ cleanup() {
    \rm -f $base.*
 }
 
-if [[ $# != 3 ]]; then
-   echo "$0 mfcc_order num_coeficientes input.wav output.mcp"
+if [[ $# != 4 ]]; then
+   echo "no va"
+   echo "$0 mfcc_order num_filtros input.wav output.mcp"
    exit 1
 fi
 
 mfcc_order=$1
-inputfile=$2
-outputfile=$3
+num_filtros=$2
+inputfile=$3
+outputfile=$4
 
 
 UBUNTU_SPTK=0
@@ -41,10 +43,11 @@ fi
 
 # Main command for feature extration
 sox $inputfile -t raw - dither -p 12 | $X2X +sf | $FRAME -l 200 -p 40 | $WINDOW -l 200 -L 200 |
-$MFCC -l 200 -m $mfcc_order -s 8 -w 1 > $base.mfcc
+$MFCC -l 200 -m $mfcc_order -n $num_filtros -s 8 -w 1 > $base.mfcc # num de banco de filtros > mfcc_order
+# 50%
 
 # Our array files need a header with the number of cols and rows:
-ncol=$((mfcc_order+1))
+ncol=$((mfcc_order))
 nrow=`$X2X +fa < $base.mfcc | wc -l | perl -ne 'print $_/'$ncol', "\n";'`
 
 # Build fmatrix file by placing nrow and ncol in front, and the data after them
